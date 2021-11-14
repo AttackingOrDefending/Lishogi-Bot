@@ -5,9 +5,9 @@ name: Lishogi Bot Build
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, test-test-bot ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, test-test-bot ]
 
 jobs:
   build:
