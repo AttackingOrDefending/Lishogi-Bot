@@ -387,7 +387,7 @@ def choose_move_time(engine, board, search_time):
 
 def choose_first_move(engine, board):
     # need to hardcode first movetime since Lishogi has 30 sec limit.
-    return choose_move_time(engine, board, 1000)
+    return choose_move_time(engine, board, 10000)
 
 
 def fake_thinking(config, board, game):
