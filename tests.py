@@ -13,22 +13,13 @@ lishogi_bot = importlib.import_module("lishogi-bot")
 TOKEN = 'Ao7zQxDqoBhE7tpG'
 
 
-def test_nothing():
-    assert True
-
-
 def download_yo():
-    response = requests.get('https://github.com/TheYoBots/shoginet/blob/windows/YaneuraOu-by-gcc.exe?raw=true', allow_redirects=True)
-    with open('yo.exe', 'wb') as file:
+    response = requests.get('https://github.com/mizar/YaneuraOu/releases/download/v7.0.0/Suisho5-YaneuraOu-v7.0.0-windows.zip', allow_redirects=True)
+    with open('yo.zip', 'wb') as file:
         file.write(response.content)
-
-
-def download_suisho():
-    response = requests.get('https://github.com/WandererXII/shoginet/archive/refs/heads/main.zip', allow_redirects=True)
-    with open('shogi.zip', 'wb') as file:
-        file.write(response.content)
-    with zipfile.ZipFile('shogi.zip', 'r') as zip_ref:
+    with zipfile.ZipFile('yo.zip', 'r') as zip_ref:
         zip_ref.extractall('.')
+    copyfile('YaneuraOu_NNUE-tournament-clang++-sse42.exe', 'yo.exe')
 
 
 def run_bot(CONFIG, logging_level):
@@ -67,7 +58,7 @@ def run_bot(CONFIG, logging_level):
                     pass
                 time.sleep(2)
 
-        @pytest.mark.timeout(300)
+        @pytest.mark.timeout(600)
         def run_test():
             lishogi_bot.start(li, user_profile, engine_factory, CONFIG, logging_level, None, one_game=True)
             response = requests.get('https://lishogi.org/game/export/{}'.format(game_id))
@@ -98,8 +89,6 @@ def test_bot():
     logging_level = lishogi_bot.logging.INFO  # lishogi_bot.logging_level.DEBUG
     lishogi_bot.logging.basicConfig(level=logging_level, filename=None, format="%(asctime)-15s: %(message)s")
     lishogi_bot.enable_color_logging(debug_lvl=logging_level)
-    download_suisho()
-    lishogi_bot.logger.info("Downloaded Suisho NNUE")
     download_yo()
     lishogi_bot.logger.info("Downloaded YaneuraOu for NNUE")
     with open("./config.yml.default") as file:
@@ -107,8 +96,6 @@ def test_bot():
     CONFIG['token'] = TOKEN
     CONFIG['engine']['dir'] = './'
     CONFIG['engine']['name'] = 'yo.exe'
-    CONFIG['engine']['usi_options']['BookFile'] = 'no_book'
-    CONFIG['engine']['usi_options']['EvalDir'] = './shoginet-main/eval'
     run_bot(CONFIG, logging_level)
 
 
