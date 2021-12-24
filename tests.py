@@ -96,6 +96,7 @@ def test_bot():
     CONFIG['token'] = TOKEN
     CONFIG['engine']['dir'] = './'
     CONFIG['engine']['name'] = 'yo.exe'
+    CONFIG['engine']['usi_options']['BookFile'] = 'no_book'
     run_bot(CONFIG, logging_level)
 
 
